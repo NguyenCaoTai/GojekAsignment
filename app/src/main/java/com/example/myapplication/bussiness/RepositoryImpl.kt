@@ -2,7 +2,6 @@ package com.example.myapplication.bussiness
 
 import com.example.myapplication.bussiness.model.User
 import com.example.myapplication.data.Service
-import com.example.myapplication.data.model.RandomUser
 import com.example.myapplication.model.Either
 import com.example.myapplication.model.Error
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +21,7 @@ class RepositoryImpl(
                     else -> when (it.body()) {
                         null -> Either.Left<Error, User>(Error("Data is empty"))
                         else -> try {
-                            Either.Right<Error, User>(mapper.randomUser(it.body()!!)!!)
+                            Either.Right<Error, User>(mapper.randomUser(it.body()!!.string()))
                         } catch (ex: IllegalArgumentException) {
                             Either.Left<Error, User>(Error("Data is empty"))
                         }

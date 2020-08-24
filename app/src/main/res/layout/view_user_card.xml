@@ -35,17 +35,18 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgUserAvatar"
-            android:layout_width="@dimen/size_avatar"
-            android:layout_height="@dimen/size_avatar"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
             android:background="@drawable/bg_avatar"
+            android:padding="@dimen/avatar_padding"
+            android:src="@drawable/ic_launcher_foreground"
             app:error="@{@drawable/ic_launcher_foreground}"
             app:imageUrl="@{userInfo.avatar}"
             app:layout_constraintBottom_toTopOf="@+id/txtUserInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guidelineTop"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:src="@drawable/ic_launcher_foreground" />
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
         <TextView
             android:id="@+id/txtUserInfo"

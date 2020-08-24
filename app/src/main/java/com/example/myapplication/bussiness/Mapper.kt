@@ -1,8 +1,8 @@
 package com.example.myapplication.bussiness
 
 import com.example.myapplication.bussiness.model.User
-import com.example.myapplication.data.model.RandomUser
+import org.json.JSONObject
 
 interface Mapper {
-    fun randomUser(randomUser: RandomUser): User?
+    fun randomUser(resp: String): User
 }

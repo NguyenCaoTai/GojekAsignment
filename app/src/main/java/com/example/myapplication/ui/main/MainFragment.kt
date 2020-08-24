@@ -1,12 +1,19 @@
 package com.example.myapplication.ui.main
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.BR
 import com.example.myapplication.R
+import com.example.myapplication.bussiness.MapperImpl
+import com.example.myapplication.data.ServiceFactory
+import com.example.myapplication.ui.main.utilities.InjectorUtils
+import com.example.myapplication.ui.main.utilities.SwipeLeftRightGestureListener
 
 class MainFragment : Fragment() {
 
@@ -14,17 +21,76 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var dataBinding: ViewDataBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+    private val gestureDetector: GestureDetector by lazy {
+        GestureDetector(
+            requireContext(),
+            SwipeLeftRightGestureListener(
+                onSwipeLeft = { viewModel.getRandomUser() },
+                onSwipeRight = { viewModel.addCurrentUserToFavorite() }
+            )
+        )
+    }
+
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(
+            viewModelStore,
+            InjectorUtils.provideMainViewModelFactory(
+                requireActivity().application,
+                ServiceFactory.getService(),
+                MapperImpl()
+            )
+        ).get(MainViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        dataBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.main_fragment,
+            container,
+            false
+        )
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        dataBinding
+            .apply {
+                setVariable(BR.userInfo, viewModel)
+                setVariable(
+                    BR.handler,
+                    object : UserInfoHandler {
+                        override fun execute(type: UserInfoType) {
+                            viewModel.onUserInfoAction(type)
+                        }
+                    }
+                )
+            }
+
+        view.findViewById<View>(R.id.viewUserCard)
+            .setOnTouchListener(object : View.OnTouchListener {
+                override fun onTouch(p0: View?, motionEvent: MotionEvent?): Boolean {
+                    return gestureDetector.onTouchEvent(motionEvent)
+                }
+            })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
+        viewModel.getRandomUser()
+
+        viewModel.messageInfo
+            .observe(
+                viewLifecycleOwner,
+                Observer { Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show() }
+            )
+
+    }
 }

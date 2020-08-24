@@ -1,11 +1,12 @@
 package com.example.myapplication.data
 
-import com.example.myapplication.data.model.RandomUser
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 
 interface Service {
     @GET("?randomapi")
-    fun random(): Call<RandomUser>
+    fun random(): Call<ResponseBody>
 
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="size_avatar">164dp</dimen>
+    <dimen name="avatar_size">164dp</dimen>
+    <dimen name="avatar_padding">4dp</dimen>
     <dimen name="user_card_margin_top">20dp</dimen>
     <dimen name="user_card_margin_bottom">20dp</dimen>
     <dimen name="user_button_action_size">48dp</dimen>
