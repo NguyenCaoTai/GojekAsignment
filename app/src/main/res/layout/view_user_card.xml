@@ -9,7 +9,7 @@
 
         <variable
             name="userInfo"
-            type="com.example.myapplication.ui.main.UserCardBinder" />
+            type="com.example.myapplication.ui.main.MainViewModel" />
 
         <variable
             name="handler"
@@ -38,6 +38,8 @@
             android:layout_width="@dimen/size_avatar"
             android:layout_height="@dimen/size_avatar"
             android:background="@drawable/bg_avatar"
+            app:error="@{@drawable/ic_launcher_foreground}"
+            app:imageUrl="@{userInfo.avatar}"
             app:layout_constraintBottom_toTopOf="@+id/txtUserInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +54,7 @@
             android:layout_columnSpan="5"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:text="@{format.formatUserFullName(userInfo.displayInfo)}"
+            android:text="@{userInfo.displayInfo}"
             app:layout_constraintBottom_toTopOf="@+id/layoutUserAction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,19 +83,23 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/UserCard.ButtonAction"
-                android:background="@drawable/ic_calendar_selector" />
+                android:background="@drawable/ic_calendar_selector"
+                android:onClick="@{view -> handler.execute(UserInfoType.DOB)}" />
 
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/UserCard.ButtonAction"
-                android:background="@drawable/ic_address_selector" />
+                android:background="@drawable/ic_address_selector"
+                android:onClick="@{view -> handler.execute(UserInfoType.ADDRESS)}" />
 
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/UserCard.ButtonAction"
-                android:background="@drawable/ic_phone_selector" />
+                android:background="@drawable/ic_phone_selector"
+                android:onClick="@{view -> handler.execute(UserInfoType.PHONE)}" />
 
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/UserCard.ButtonAction"
-                android:background="@drawable/ic_lock_selector" />
+                android:background="@drawable/ic_lock_selector"
+                android:onClick="@{view -> handler.execute(UserInfoType.LOCK)}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.constraintlayout.widget.Guideline

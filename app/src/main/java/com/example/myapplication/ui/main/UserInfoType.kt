@@ -2,5 +2,8 @@ package com.example.myapplication.ui.main
 
 enum class UserInfoType {
     NAME,
-    ADDRESS
+    ADDRESS,
+    DOB,
+    PHONE,
+    LOCK
 }

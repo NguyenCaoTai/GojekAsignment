@@ -1,5 +1,5 @@
 package com.example.myapplication.ui.main
 
 interface UserInfoHandler {
-    fun execute(userInfoType: UserInfoType)
+    fun execute(type: UserInfoType)
 }
