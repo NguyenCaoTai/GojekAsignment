@@ -51,8 +51,6 @@
             android:id="@+id/txtUserInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnSpan="5"
-            android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@{userInfo.displayInfo}"
             app:layout_constraintBottom_toTopOf="@+id/layoutUserAction"
@@ -60,7 +58,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgUserAvatar"
             app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:layout_editor_absoluteX="155dp"
             tools:text="My Name is \n Nguyen Cao Tai" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
