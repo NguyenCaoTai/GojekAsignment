@@ -1,5 +1,10 @@
 package com.example.myapplication.bussiness
 
+import com.example.myapplication.bussiness.model.User
+import com.example.myapplication.data.model.RandomUser
+import com.example.myapplication.model.Either
+import com.example.myapplication.model.Error
+
 interface Repository {
-    fun getRandomUser()
+    suspend fun getRandomUser(): Either<Error, User>
 }
