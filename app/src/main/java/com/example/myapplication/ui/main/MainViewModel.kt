@@ -10,7 +10,6 @@ import com.example.myapplication.bussiness.Repository
 import com.example.myapplication.bussiness.model.User
 import com.example.myapplication.model.Either
 import kotlinx.coroutines.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,10 +30,10 @@ class MainViewModel(
             with(repository.getRandomUser()) {
                 when (this) {
                     is Either.Left -> messageInfo.postValue(this.left!!.message)
-                    else -> this.right!!
-                        .also { currentUser = it }
+                    is Either.Right -> this.right
+                        ?.also { currentUser = it }
                         .apply {
-                            avatar.set(this.picture)
+                            avatar.set(this?.picture)
                             displayInfo.set(
                                 StringFormat.formatUserCardInfo(
                                     getApplication(),
@@ -49,7 +48,14 @@ class MainViewModel(
     }
 
     fun addCurrentUserToFavorite() {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            with(repository.addFavoriteUser(currentUser)) {
+                when (this) {
+                    is Either.Right -> messageInfo.postValue("User add to favorite store")
+                    is Either.Left -> messageInfo.postValue("Favorite User add failed")
+                }
+            }
+        }
     }
 
     fun onUserInfoAction(type: UserInfoType) {

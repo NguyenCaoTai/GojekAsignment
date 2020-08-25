@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -10,8 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.BR
 import com.example.myapplication.R
-import com.example.myapplication.bussiness.MapperImpl
-import com.example.myapplication.data.ServiceFactory
+import com.example.myapplication.ui.favoriteuser.FavoriteUserActivity
 import com.example.myapplication.ui.main.utilities.InjectorUtils
 import com.example.myapplication.ui.main.utilities.SwipeLeftRightGestureListener
 
@@ -37,9 +37,7 @@ class MainFragment : Fragment() {
         ViewModelProvider(
             viewModelStore,
             InjectorUtils.provideMainViewModelFactory(
-                requireActivity().application,
-                ServiceFactory.getService(),
-                MapperImpl()
+                requireActivity().application
             )
         ).get(MainViewModel::class.java)
     }
@@ -74,11 +72,14 @@ class MainFragment : Fragment() {
             }
 
         view.findViewById<View>(R.id.viewUserCard)
-            .setOnTouchListener(object : View.OnTouchListener {
-                override fun onTouch(p0: View?, motionEvent: MotionEvent?): Boolean {
-                    return gestureDetector.onTouchEvent(motionEvent)
-                }
-            })
+            .setOnTouchListener { p0, motionEvent -> gestureDetector.onTouchEvent(motionEvent) }
+
+        view.findViewById<View>(R.id.btnFavoriteUser)
+            .setOnClickListener {
+                startActivity(
+                    Intent(requireActivity(), FavoriteUserActivity::class.java)
+                )
+            }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -91,6 +92,5 @@ class MainFragment : Fragment() {
                 viewLifecycleOwner,
                 Observer { Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show() }
             )
-
     }
 }
