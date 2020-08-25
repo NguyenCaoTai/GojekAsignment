@@ -1,26 +1,48 @@
 package com.example.myapplication.ui.main.utilities
 
 import android.app.Application
-import android.content.Context
-import androidx.fragment.app.Fragment
-import com.example.myapplication.bussiness.Mapper
-import com.example.myapplication.bussiness.Repository
-import com.example.myapplication.bussiness.RepositoryImpl
+import com.example.myapplication.bussiness.*
+import com.example.myapplication.bussiness.model.User
 import com.example.myapplication.data.Service
+import com.example.myapplication.data.ServiceFactory
+import com.example.myapplication.data.local.AppDatabase
+import com.example.myapplication.ui.favoriteuser.FavoriteViewModelFactory
 import com.example.myapplication.ui.main.MainViewModelFactory
 
 object InjectorUtils {
-    private fun getRepository(
-        service: Service,
-        mapper: Mapper
-    ): Repository = RepositoryImpl(service, mapper)
+    fun provideMainViewModelFactory(application: Application): MainViewModelFactory =
+        MainViewModelFactory(
+            application,
+            getRepository(application)
+        )
 
-    fun provideMainViewModelFactory(
-        application: Application,
-        service: Service,
-        mapper: Mapper
-    ): MainViewModelFactory = MainViewModelFactory(
-        application,
-        getRepository(service, mapper)
-    )
+    fun provideFavoriteViewModelFactory(application: Application): FavoriteViewModelFactory =
+        FavoriteViewModelFactory(
+            application,
+            getRepository(application)
+        )
+
+    private fun getDB(application: Application): AppDatabase =
+        AppDatabase.getInstance(application)
+
+    private fun getService(): Service =
+        ServiceFactory.getService()
+
+    private fun getUserMapper(): Mapper<String, User> =
+        RandomUserMapper()
+
+    private fun getBusinessToDaoUserMapper(): Mapper<User, com.example.myapplication.data.local.model.User> =
+        BusinessUserToDaoMapper()
+
+    private fun getDaoToBusinessUserMapper(): Mapper<com.example.myapplication.data.local.model.User, User> =
+        DaoToBusinessUserMapper()
+
+    private fun getRepository(application: Application): Repository =
+        RepositoryImpl(
+            service = getService(),
+            dao = getDB(application).userDao(),
+            randomUserMapper = getUserMapper(),
+            businessUserToDaoMapper = getBusinessToDaoUserMapper(),
+            daoToBusinessUserMapper = getDaoToBusinessUserMapper()
+        )
 }

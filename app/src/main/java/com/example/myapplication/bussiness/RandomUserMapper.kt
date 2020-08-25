@@ -7,14 +7,15 @@ import org.json.JSONObject
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
-class MapperImpl : Mapper {
-    override fun randomUser(resp: String): User = try {
-        JSONObject(resp)
+class RandomUserMapper : Mapper<String, User> {
+    override fun transform(input: String): User = try {
+        JSONObject(input)
             .takeIf { it.has("results") }?.getJSONArray("results")
             ?.takeIf { it.length() > 0 }?.getJSONObject(0)
             ?.takeIf { it.has("user") }?.getJSONObject("user")
             ?.let {
                 User(
+                    ssn = it.getString("SSN"),
                     name = it.getJSONObject("name")
                         .let { name ->
                             Name(
