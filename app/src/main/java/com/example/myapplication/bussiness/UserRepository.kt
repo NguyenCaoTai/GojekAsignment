@@ -21,7 +21,7 @@ class UserRepository(
                 .execute()
                 .let {
                     when (it.isSuccessful) {
-                        false -> Either.Left(Error(it.message()))
+                        false -> Either.Left(Error(it.errorBody()?.string() ?: "Not define"))
                         else -> when (it.body()) {
                             null -> Either.Left<Error, User>(Error("Data is empty"))
                             else -> try {
@@ -43,7 +43,7 @@ class UserRepository(
             dao.insert(user)
             Either.Right<Error, Unit>(Unit)
         } catch (ex: Exception) {
-            Either.Left<Error, Unit>(Error("Insert failed"))
+            Either.Left<Error, Unit>(Error(ex.message ?: "Insert failed"))
         }
 
     override suspend fun getAllFavoriteUser(): Either<Error, List<User>> =
