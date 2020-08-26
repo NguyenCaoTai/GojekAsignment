@@ -7,7 +7,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.BR
 import com.example.myapplication.R
-import com.example.myapplication.bussiness.model.User
 
 class FavoriteUserAdapter(val dataset: MutableList<FavoriteUser>) :
     RecyclerView.Adapter<FavoriteUserAdapter.ViewHolder>() {

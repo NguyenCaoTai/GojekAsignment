@@ -1,8 +1,8 @@
 package com.example.myapplication.bussiness
 
-import com.example.myapplication.bussiness.model.User
 import com.example.myapplication.data.Service
 import com.example.myapplication.data.local.UserDao
+import com.example.myapplication.data.local.model.User
 import com.example.myapplication.model.Either
 import com.example.myapplication.model.Error
 import kotlinx.coroutines.Dispatchers
@@ -10,12 +10,10 @@ import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
-class RepositoryImpl(
+class UserRepository(
     private val service: Service,
     private val dao: UserDao,
-    private val randomUserMapper: Mapper<String, User>,
-    private val businessUserToDaoMapper: Mapper<User, com.example.myapplication.data.local.model.User>,
-    private val daoToBusinessUserMapper: Mapper<com.example.myapplication.data.local.model.User, User>
+    private val randomUserMapper: Mapper<String, User>
 ) : Repository {
     override suspend fun getRandomUser(): Either<Error, User> =
         withContext(Dispatchers.IO) {
@@ -42,7 +40,7 @@ class RepositoryImpl(
 
     override suspend fun addFavoriteUser(user: User): Either<Error, Unit> =
         try {
-            dao.insertAll(businessUserToDaoMapper.transform(user))
+            dao.insertAll(user)
             Either.Right<Error, Unit>(Unit)
         } catch (ex: Exception) {
             Either.Left<Error, Unit>(Error("Insert failed"))
@@ -53,7 +51,6 @@ class RepositoryImpl(
             try {
                 Either.Right<Error, List<User>>(
                     dao.getAll()
-                        .map { daoToBusinessUserMapper.transform(it) }
                 )
             } catch (ex: Exception) {
                 Either.Left<Error, List<User>>(Error(ex.message ?: "Get favorite user failed"))

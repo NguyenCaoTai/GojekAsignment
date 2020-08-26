@@ -1,8 +1,8 @@
 package com.example.myapplication.bussiness
 
-import com.example.myapplication.bussiness.model.Location
-import com.example.myapplication.bussiness.model.Name
-import com.example.myapplication.bussiness.model.User
+import com.example.myapplication.data.local.model.Location
+import com.example.myapplication.data.local.model.Name
+import com.example.myapplication.data.local.model.User
 import org.json.JSONObject
 import java.lang.Exception
 import java.lang.IllegalArgumentException

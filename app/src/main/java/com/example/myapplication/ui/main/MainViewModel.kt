@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.bussiness.Repository
-import com.example.myapplication.bussiness.model.User
+import com.example.myapplication.data.local.model.User
 import com.example.myapplication.model.Either
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
