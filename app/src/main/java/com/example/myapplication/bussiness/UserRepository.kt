@@ -40,7 +40,7 @@ class UserRepository(
 
     override suspend fun addFavoriteUser(user: User): Either<Error, Unit> =
         try {
-            dao.insertAll(user)
+            dao.insert(user)
             Either.Right<Error, Unit>(Unit)
         } catch (ex: Exception) {
             Either.Left<Error, Unit>(Error("Insert failed"))
